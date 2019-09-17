@@ -3,7 +3,7 @@
 #include <string>
 
 
-void PrintEntries(const std::string & haystack, const std::string & needle) {
+void PrintEntries(const std::string& haystack, const std::string& needle) {
 
     const int haystack_size = haystack.size();
     const int needle_size = needle.size();
