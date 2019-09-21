@@ -59,30 +59,31 @@ std::vector<int> PrefixToZ (const std::vector<int>& prefix) {
 
     return z;
 }
+
 std::string ZToString(const std::vector<int>& z) {
     std::string txt = "a";
-    std::vector<int> used_indices;
     bool append_after_block = true;
-    int txt_index = 1;
-    while (txt_index < z.size()) {
+
+    for (int txt_index = 1; txt_index < z.size(); ++txt_index) {
+        std::vector<int> used_indices;
         if (z[txt_index] != 0) {
             used_indices.clear();
-            int prefix_index = 0, remaining_block_len = z[txt_index];
-            while (remaining_block_len > 0) {
-                if (z[txt_index] > remaining_block_len) {
-                    remaining_block_len = z[txt_index];
+
+            for (int prefix_index = 0, remaining_block_size = z[txt_index];
+                remaining_block_size > 0;
+                --remaining_block_size, ++prefix_index) {
+
+                if (z[txt_index] > remaining_block_size) {
+                    remaining_block_size = z[txt_index];
                     used_indices.push_back(z[txt_index]);
                     prefix_index = 0;
-                }
-                if (z[txt_index] == remaining_block_len) {
+                } else if (z[txt_index] == remaining_block_size) {
                     used_indices.push_back(z[txt_index]);
                 }
                 txt += txt[prefix_index];
-                ++prefix_index;
-                ++txt_index;
-                --remaining_block_len;
             }
             append_after_block = true;
+
         } else {
             if (append_after_block) {
                 std::vector<bool> used_chars(26, false);
@@ -103,6 +104,7 @@ std::string ZToString(const std::vector<int>& z) {
     }
     return txt;
 }
+
 std::vector<int> ZToPrefix(std::vector<int>& z) {
     const size_t z_size = z.size();
     std::vector<int> prefix (z_size, 0);
@@ -113,18 +115,17 @@ std::vector<int> ZToPrefix(std::vector<int>& z) {
     }
     return prefix;
 }
+
 char GetNewChar(const std::vector<int>& prefix, const std::string& txt, int pos) {
     std::vector<bool> used(26, false);
-    int symbol = prefix[pos - 1];
-    while (symbol > 0) {
+    for (int symbol = prefix[pos - 1]; symbol > 0;) {
         used[txt[symbol] - 'a'] = true;
         symbol = prefix[symbol - 1];
     }
     char new_character = 'b';
-    while (used[new_character - 'a']) {
-        ++new_character;
-    }
+    for (;used[new_character - 'a']; ++new_character);
     return new_character;
+
 }
 
 std::string PrefixToString(std::vector<int> prefix) {
@@ -139,6 +140,7 @@ std::string PrefixToString(std::vector<int> prefix) {
     }
     return txt;
 }
+
 int main () {
 
     return 0;
