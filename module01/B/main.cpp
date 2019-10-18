@@ -9,7 +9,7 @@ std::vector<int> StringToZ(const std::string &txt) {
     int left = 0;
     int right = 0;
     for (int i = 1; i < len_txt; ++i) {
-        int shift = i <= right ? std::min(z[i - left], right - i + 1) : 0;
+        int shift = (i <= right) ? std::min(z[i - left], right - i + 1) : 0;
         while (shift + i < len_txt && txt[i + shift] == txt[shift]) {
             ++shift;
         }
@@ -116,7 +116,7 @@ std::vector<int> ZToPrefix(const std::vector<int> &z) {
     int z_size = z.size();
     std::vector<int> prefix(z_size, 0);
     for (int i = 1; i < z_size; ++i) {
-        for (int j = z[i] - 1; j >= 0 && prefix[i + j] <= 0; --j) {
+        for (int j = z[i] - 1; j >= 0 && prefix[i + j] >= 0; --j) {
             prefix[i + j] = j + 1;
         }
     }
