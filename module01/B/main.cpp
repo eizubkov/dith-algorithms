@@ -123,7 +123,7 @@ std::vector<int> ZToPrefix(const std::vector<int> &z) {
     return prefix;
 }
 
-char new_character(const std::vector<int> &prefix, const std::string &txt, int pos) {
+char GetNewChar(const std::vector<int> &prefix, const std::string &txt, int pos) {
     std::vector<bool> used(26, false);
     int symbol = prefix[pos - 1];
     while (symbol > 0) {
@@ -145,7 +145,7 @@ std::string PrefixToString(const std::vector<int> &prefix) {
     std::string txt = "a";
     for (int i = 1; i < prefix_size; ++i) {
         if (prefix[i] == 0) {
-            txt += new_character(prefix, txt, i);
+            txt += GetNewChar(prefix, txt, i);
         } else {
             txt += txt[prefix[i] - 1];
         }
