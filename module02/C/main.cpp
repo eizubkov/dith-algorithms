@@ -6,7 +6,7 @@
 
 
 std::vector<int> buildSuffixArray(const std::string &txt,
-                                  std::vector<std::vector<int>> &classes) {
+                                  std::vector <std::vector<int>> &classes) {
     std::string txt_copy = txt;
     txt_copy += '#';
     const int txt_size = txt_copy.size();
@@ -77,7 +77,7 @@ std::vector<int> buildSuffixArray(const std::string &txt,
     return suffs;
 }
 
-int lcp(int i, int j, const std::vector<std::vector<int >> &classes, int n) {
+int lcp(int i, int j, const std::vector <std::vector<int >> &classes, int n) {
     int result = 0;
     for (int k = log2(n); k >= 0; --k)
         if (classes[k][i] == classes[k][j]) {
@@ -95,7 +95,7 @@ std::string kthCommonSubsequence(const std::string &string1,
     int diff = 0;
     std::string txt = string1 + '$' + string2;
 
-    std::vector<std::vector<int >> classes;
+    std::vector <std::vector<int >> classes;
     std::vector<int> suffs = buildSuffixArray(txt, classes);
     int iterator_1 = 1, iterator_2 = 1;
     std::string answer;
