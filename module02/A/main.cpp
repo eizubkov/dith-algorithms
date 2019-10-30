@@ -3,7 +3,6 @@
 #include <string>
 
 std::vector<int> buildSuffixArray(const std::string &txt) {
-
     std::string txt_copy = txt;
     txt_copy += '$';
     const int txt_size = txt_copy.size();
@@ -43,8 +42,8 @@ std::vector<int> buildSuffixArray(const std::string &txt) {
                 new_suffs[i] += txt_size;
             }
         }
-        count.assign(classesN, 0);
 
+        count.assign(classesN, 0);
         for (int i = 0; i < txt_size; ++i) {
             count[classes[k][new_suffs[i]]]++;
         }
@@ -59,7 +58,6 @@ std::vector<int> buildSuffixArray(const std::string &txt) {
 
         classes.emplace_back(txt_size);
         classes[k + 1][suffs[0]] = 0;
-
         classesN = 1;
         for (int i = 1; i < txt_size; i++) {
             int mid1 = (suffs[i] + (1 << k)) % txt_size;
@@ -72,7 +70,6 @@ std::vector<int> buildSuffixArray(const std::string &txt) {
             classes[k + 1][suffs[i]] = classesN - 1;
         }
     }
-
     suffs.erase(suffs.begin());
     return suffs;
 }
@@ -104,7 +101,6 @@ std::vector<int> kasai(const std::string &txt,
             k = 0;
         }
     }
-
     return lcp;
 }
 
