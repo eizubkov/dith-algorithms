@@ -42,10 +42,10 @@ std::vector<int> BuildSuffixArray(std::string txt) {
     }
 
     std::vector<int> new_suffs(txt_size);
-    for (int k = 0; 2_pow_k < txt_size; ++k) {
-        int 2_pow_k = (1 << k)
+    for (int k = 0; (1 << k) < txt_size; ++k) {
+        int two_pow_k = (1 << k);
         for (int i = 0; i < txt_size; ++i) {
-            new_suffs[i] = sort_suffs[i] - 2_pow_k;
+            new_suffs[i] = sort_suffs[i] - two_pow_k;
             if (new_suffs[i] < 0) {
                 new_suffs[i] += txt_size;
             }
@@ -68,8 +68,8 @@ std::vector<int> BuildSuffixArray(std::string txt) {
         classes[k + 1][sort_suffs[0]] = 0;
         classesN = 1;
         for (int i = 1; i < txt_size; i++) {
-            const int mid1 = (sort_suffs[i] + 2_pow_k) % txt_size;
-            const int mid2 = (sort_suffs[i - 1] + 2_pow_k) % txt_size;
+            const int mid1 = (sort_suffs[i] + two_pow_k) % txt_size;
+            const int mid2 = (sort_suffs[i - 1] + two_pow_k) % txt_size;
 
             if (classes[k][sort_suffs[i]] != classes[k][sort_suffs[i - 1]]
                 || classes[k][mid1] != classes[k][mid2]) {
