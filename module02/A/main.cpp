@@ -2,23 +2,19 @@
 #include <vector>
 #include <string>
 
-std::vector<int> CountSort(const std::string &txt, size_t size) {
-    std::vector<int> count(size, 0);
-    const int txt_size = txt.size();
+template<typename T>
+std::vector<int> CountSort(const T &container, size_t size) {
+    const int container_size = container.size();
+    std::vector<int> count(container_size, 0);
 
-    for (int i = 0; i < txt_size; ++i) {
-        ++count[txt[i]];
+    for (int i = 0; i < container_size; ++i) {
+        ++count[container[i]];
     }
 
     for (int i = 1; i < size; ++i) {
         count[i] += count[i - 1];
     }
-
-    std::vector<int> sort_suffs(txt_size, 0);
-    for (int i = 0; i < txt_size; ++i) {
-        sort_suffs[--count[txt[i]]] = i;
-    }
-    return sort_suffs;
+    return count;
 }
 
 std::vector<int> BuildSuffixArray(std::string txt) {
@@ -27,9 +23,13 @@ std::vector<int> BuildSuffixArray(std::string txt) {
 
     txt += min_char;
     const int txt_size = txt.size();
-    std::vector<int> sort_suffs = CountSort(txt, alphabet_size);
+    std::vector<int> sort_suffs(txt_size, 0);
+    std::vector<int> count = CountSort(txt, alphabet_size);
 
-    std::vector<int> count(alphabet_size, 0);
+    for (int i = 0; i < txt_size; ++i) {
+        sort_suffs[--count[txt[i]]] = i;
+    }
+
     std::vector<std::vector<int>> classes(1, std::vector<int>(txt_size));
     classes[0][sort_suffs[0]] = 0;
 
@@ -51,15 +51,7 @@ std::vector<int> BuildSuffixArray(std::string txt) {
             }
         }
 
-        count.assign(classesN, 0);
-        for (int i = 0; i < txt_size; ++i) {
-            count[classes[k][new_suffs[i]]]++;
-        }
-
-        for (int i = 1; i < classesN; ++i) {
-            count[i] += count[i - 1];
-        }
-
+        count = CountSort(classes[k], classesN);
         for (int i = txt_size - 1; i >= 0; --i) {
             sort_suffs[--count[classes[k][new_suffs[i]]]] = new_suffs[i];
         }
