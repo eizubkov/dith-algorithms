@@ -1,19 +1,22 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <iterator>
 
-template<typename T>
-std::vector<int> CountSort(const T &container, size_t size) {
-    const int container_size = container.size();
-    std::vector<int> count(container_size, 0);
-
-    for (int i = 0; i < container_size; ++i) {
-        ++count[container[i]];
+template<typename It>
+std::vector<int> CountSort(const It cbegin, const It cend, size_t size,
+                           typename std::enable_if<std::is_integral<
+                                   typename std::iterator_traits<It>::value_type>::value
+                           >::type * = nullptr) {
+    std::vector<int> count(size, 0);
+    for (auto it = cbegin; it < cend; ++it) {
+        ++count[*it];
     }
 
     for (int i = 1; i < size; ++i) {
         count[i] += count[i - 1];
     }
+
     return count;
 }
 
@@ -24,13 +27,13 @@ std::vector<int> BuildSuffixArray(std::string txt) {
     txt += min_char;
     const int txt_size = txt.size();
     std::vector<int> sort_suffs(txt_size, 0);
-    std::vector<int> count = CountSort(txt, alphabet_size);
+    std::vector<int> count = CountSort(txt.begin(), txt.end(), alphabet_size);
 
     for (int i = 0; i < txt_size; ++i) {
         sort_suffs[--count[txt[i]]] = i;
     }
 
-    std::vector<std::vector<int>> classes(1, std::vector<int>(txt_size));
+    std::vector <std::vector<int>> classes(1, std::vector<int>(txt_size));
     classes[0][sort_suffs[0]] = 0;
 
     int classesN = 1;
@@ -51,7 +54,7 @@ std::vector<int> BuildSuffixArray(std::string txt) {
             }
         }
 
-        count = CountSort(classes[k], classesN);
+        count = CountSort(classes[k].begin(), classes[k].end(), classesN);
         for (int i = txt_size - 1; i >= 0; --i) {
             sort_suffs[--count[classes[k][new_suffs[i]]]] = new_suffs[i];
         }
