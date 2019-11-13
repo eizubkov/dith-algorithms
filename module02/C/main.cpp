@@ -1,14 +1,17 @@
+#include <algorithm>
 #include <iostream>
+#include <iterator>
 #include <vector>
 #include <string>
 #include <cinttypes>
-#include <algorithm>
 
 template<typename It>
 std::vector<int> CountSort(const It cbegin, const It cend, size_t size,
                            typename std::enable_if<std::is_integral<
                                    typename std::iterator_traits<It>::value_type>::value
                            >::type * = nullptr) {
+    // Функция прнимает итераторы контейнера.
+    // Элементы контейнера должны иметь тип integer >= 0 и < size.
     std::vector<int> count(size, 0);
     for (auto it = cbegin; it < cend; ++it) {
         ++count[*it];
@@ -26,7 +29,7 @@ std::vector<int> BuildSuffixArray(std::string txt, std::vector <std::vector<int>
     txt += min_char;
     const int txt_size = txt.size();
     std::vector<int> sort_suffs(txt_size, 0);
-    auto count = CountSort(txt.begin(), txt.end(), alphabet_size);
+    auto count = CountSort(txt.cbegin(), txt.cend(), alphabet_size);
 
     for (int i = 0; i < txt_size; ++i) {
         sort_suffs[--count[txt[i]]] = i;
@@ -53,7 +56,7 @@ std::vector<int> BuildSuffixArray(std::string txt, std::vector <std::vector<int>
             }
         }
 
-        count = CountSort(classes[k].begin(), classes[k].end(), classesN);
+        count = CountSort(classes[k].cbegin(), classes[k].cend(), classesN);
         for (int i = txt_size - 1; i >= 0; --i) {
             sort_suffs[--count[classes[k][new_suffs[i]]]] = new_suffs[i];
         }
