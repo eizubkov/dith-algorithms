@@ -1,22 +1,22 @@
 #include <iostream>
+#include <iterator>
 #include <vector>
 #include <string>
-#include <iterator>
 
 template<typename It>
 std::vector<int> CountSort(const It cbegin, const It cend, size_t size,
                            typename std::enable_if<std::is_integral<
                                    typename std::iterator_traits<It>::value_type>::value
                            >::type * = nullptr) {
+    // Функция прнимает итераторы контейнера.
+    // Элементы контейнера должны иметь тип integer >= 0 и < size.
     std::vector<int> count(size, 0);
     for (auto it = cbegin; it < cend; ++it) {
         ++count[*it];
     }
-
     for (int i = 1; i < size; ++i) {
         count[i] += count[i - 1];
     }
-
     return count;
 }
 
@@ -27,7 +27,7 @@ std::vector<int> BuildSuffixArray(std::string txt) {
     txt += min_char;
     const int txt_size = txt.size();
     std::vector<int> sort_suffs(txt_size, 0);
-    std::vector<int> count = CountSort(txt.begin(), txt.end(), alphabet_size);
+    std::vector<int> count = CountSort(txt.cbegin(), txt.cend(), alphabet_size);
 
     for (int i = 0; i < txt_size; ++i) {
         sort_suffs[--count[txt[i]]] = i;
@@ -54,7 +54,7 @@ std::vector<int> BuildSuffixArray(std::string txt) {
             }
         }
 
-        count = CountSort(classes[k].begin(), classes[k].end(), classesN);
+        count = CountSort(classes[k].cbegin(), classes[k].cend(), classesN);
         for (int i = txt_size - 1; i >= 0; --i) {
             sort_suffs[--count[classes[k][new_suffs[i]]]] = new_suffs[i];
         }
@@ -80,7 +80,6 @@ std::vector<int> BuildSuffixArray(std::string txt) {
 
 std::vector<int> Kasai(const std::string &txt,
                        const std::vector<int> &suffix_array) {
-
     int suffix_array_size = suffix_array.size();
 
     std::vector<int> lcp(suffix_array_size, 0);
@@ -125,6 +124,7 @@ int CountDistinctSubstring(const std::string &txt) {
 int main() {
     std::string txt;
     std::cin >> txt;
-    std::cout << CountDistinctSubstring(std::move(txt));
+
+    std::cout << CountDistinctSubstring(std::move(txt)) << std::endl;
     return 0;
 }
