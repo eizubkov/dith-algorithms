@@ -22,7 +22,7 @@ std::vector<int> CountSort(const It cbegin, const It cend, size_t size,
     return count;
 }
 
-std::vector<int> BuildSuffixArray(std::string txt, std::vector <std::vector<int>> &classes) {
+std::vector<int> BuildSuffixArray(std::string txt, std::vector<std::vector<int>> &classes) {
     static const char min_char = '#';
     static const int alphabet_size = 128;
 
@@ -70,7 +70,7 @@ std::vector<int> BuildSuffixArray(std::string txt, std::vector <std::vector<int>
 
             if (classes[k][sort_suffs[i]] != classes[k][sort_suffs[i - 1]]
                 || classes[k][mid1] != classes[k][mid2]) {
-                classesN++;
+                ++classesN;
             }
             classes[k + 1][sort_suffs[i]] = classesN - 1;
         }
@@ -78,11 +78,11 @@ std::vector<int> BuildSuffixArray(std::string txt, std::vector <std::vector<int>
     return sort_suffs;
 }
 
-int lcp(int i, int j, const std::vector <std::vector<int>> &classes) {
+int lcp(int i, int j, const std::vector<std::vector<int>> &classes) {
     int result = 0;
     for (int k = classes.size() - 2; k >= 0; --k)
         if (classes[k][i] == classes[k][j]) {
-            int two_pow_k = 1 << k;
+            const int two_pow_k = 1 << k;
             i += two_pow_k;
             j += two_pow_k;
             result += two_pow_k;
@@ -93,36 +93,42 @@ int lcp(int i, int j, const std::vector <std::vector<int>> &classes) {
 std::string KthCommonSubsequence(const std::string &string1,
                                  const std::string &string2, const int64_t k) {
     const std::string txt = string1 + '$' + string2;
+    const int string1_size = string1.size();
     const int txt_size = txt.size();
 
-    std::vector <std::vector<int>> classes;
-    const auto suffs = BuildSuffixArray(txt, classes);
+    std::vector<std::vector<int>> classes;
+    const auto suffix_array = BuildSuffixArray(txt, classes);
 
-    int64_t result = 0;
-    int prev_lcp = 0;
     int iterator_1 = 1;
     int iterator_2 = 1;
+    int previous_lcp;
+    int64_t result = 0;
     while (result < k) {
         if (iterator_1 < iterator_2) {
-            std::swap(iterator_1, iterator_2);
+            do {
+                ++iterator_1;
+            } while (suffix_array[iterator_1] > string1_size);
+        } else {
+            do {
+                ++iterator_2;
+            } while (suffix_array[iterator_2] <= string1_size);
         }
-        do {
-            ++iterator_1;
-            if (iterator_1 > txt_size) {
-                return "-1";
-            }
-        } while (suffs[iterator_1] > string1.size());
+        if (iterator_1 > txt_size || iterator_2 > txt_size) {
+            return "-1";
+        }
+        int current_lcp = lcp(suffix_array[iterator_1], suffix_array[iterator_2], classes);
+        result = (current_lcp > previous_lcp) ? (result + current_lcp - previous_lcp) : result;
+        previous_lcp = current_lcp;
+    }
 
-        int curr_lcp = lcp(suffs[iterator_1], suffs[iterator_2], classes);
-        result = (curr_lcp - prev_lcp > 0) ? result + curr_lcp - prev_lcp : result;
-        prev_lcp = curr_lcp;
+    std::string found_string;
+    const int found_string_end = (result == k) ?
+                                 (suffix_array[iterator_1] + previous_lcp) :
+                                 (suffix_array[iterator_1] + previous_lcp - result + k);
+    for (int i = suffix_array[iterator_1]; i < found_string_end; ++i) {
+        found_string += txt[i];
     }
-    int cond = (result == k) ? suffs[iterator_1] + prev_lcp : suffs[iterator_1] + prev_lcp - result + k;
-    std::string answer;
-    for (int i = suffs[iterator_1]; i < cond; ++i) {
-        answer += txt[i];
-    }
-    return answer;
+    return found_string;
 }
 
 int main() {
@@ -130,7 +136,7 @@ int main() {
     std::string s, t;
     std::cin >> s >> t;
     while (std::cin >> k) {
-        std::cout << KthCommonSubsequence(s, t, k);
+        std::cout << KthCommonSubsequence(s, t, k) << std::endl;
     }
     return 0;
 }
