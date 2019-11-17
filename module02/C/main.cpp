@@ -116,7 +116,7 @@ std::string KthCommonSubsequence(const std::string &string1,
         if (iterator_1 > txt_size || iterator_2 > txt_size) {
             return "-1";
         }
-        int current_lcp = lcp(suffix_array[iterator_1], suffix_array[iterator_2], classes);
+        const int current_lcp = lcp(suffix_array[iterator_1], suffix_array[iterator_2], classes);
         result = (current_lcp > previous_lcp) ? (result + current_lcp - previous_lcp) : result;
         previous_lcp = current_lcp;
     }
