@@ -162,11 +162,23 @@ void CheckResult() {
         assert((ZToString(PrefixToZ(StringToPrefix(txt)))) == txt);
         assert(PrefixToString(ZToPrefix(StringToZ(txt))) == txt);
     }
+    {
+        std::string txt = "hello";
+        std::string except = "abbbb";
+        assert((ZToString(PrefixToZ(StringToPrefix(txt)))) == except);
+        assert(PrefixToString(ZToPrefix(StringToZ(txt))) == except);
+    }
+    {
+        std::string txt = "word";
+        std::string except = "abbb";
+        assert((ZToString(PrefixToZ(StringToPrefix(txt)))) == except);
+        assert(PrefixToString(ZToPrefix(StringToZ(txt))) == except);
+    }
+
     std::cout << "OK" << std::endl;
 }
 
 int main() {
     CheckResult();
-
     return 0;
 }
