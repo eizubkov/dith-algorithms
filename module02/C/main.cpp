@@ -48,7 +48,7 @@ std::vector<int> BuildSuffixArray(std::string txt, std::vector<std::vector<int>>
 
     std::vector<int> new_suffs(txt_size);
     for (int k = 0; (1 << k) < txt_size; ++k) {
-        int two_pow_k = (1 << k);
+        const int two_pow_k = (1 << k);
         for (int i = 0; i < txt_size; ++i) {
             new_suffs[i] = sort_suffs[i] - two_pow_k;
             if (new_suffs[i] < 0) {
