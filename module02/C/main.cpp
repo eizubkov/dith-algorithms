@@ -101,7 +101,7 @@ std::string KthCommonSubsequence(const std::string &string1,
 
     int iterator_1 = 1;
     int iterator_2 = 1;
-    int previous_lcp;
+    int previous_lcp = 0;
     int64_t result = 0;
     while (result < k) {
         if (iterator_1 < iterator_2) {
@@ -120,15 +120,8 @@ std::string KthCommonSubsequence(const std::string &string1,
         result = (current_lcp > previous_lcp) ? (result + current_lcp - previous_lcp) : result;
         previous_lcp = current_lcp;
     }
-
-    std::string found_string;
-    const int found_string_end = (result == k) ?
-                                 (suffix_array[iterator_1] + previous_lcp) :
-                                 (suffix_array[iterator_1] + previous_lcp - result + k);
-    for (int i = suffix_array[iterator_1]; i < found_string_end; ++i) {
-        found_string += txt[i];
-    }
-    return found_string;
+    const int found_string_size = (result == k) ? previous_lcp : (previous_lcp - result + k);
+    return txt.substr(suffix_array[iterator_1], found_string_size);
 }
 
 int main() {
