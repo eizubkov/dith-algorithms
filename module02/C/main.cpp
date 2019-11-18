@@ -78,7 +78,7 @@ std::vector<int> BuildSuffixArray(std::string txt, std::vector<std::vector<int>>
     return sort_suffs;
 }
 
-int lcp(int i, int j, const std::vector<std::vector<int>> &classes) {
+int getLCPSize(int i, int j, const std::vector <std::vector<int>> &classes) {
     int result = 0;
     for (int k = classes.size() - 2; k >= 0; --k)
         if (classes[k][i] == classes[k][j]) {
@@ -116,7 +116,7 @@ std::string KthCommonSubsequence(const std::string &string1,
         if (iterator_1 > txt_size || iterator_2 > txt_size) {
             return "-1";
         }
-        const int current_lcp = lcp(suffix_array[iterator_1], suffix_array[iterator_2], classes);
+        const int current_lcp = getLCPSize(suffix_array[iterator_1], suffix_array[iterator_2], classes);
         result = (current_lcp > previous_lcp) ? (result + current_lcp - previous_lcp) : result;
         previous_lcp = current_lcp;
     }
