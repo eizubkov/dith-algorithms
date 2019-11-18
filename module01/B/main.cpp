@@ -38,7 +38,7 @@ std::vector<int> StringToPrefix(const std::string &txt) {
 }
 
 std::vector<int> PrefixToZ(const std::vector<int> &prefix) {
-    int prefix_size = prefix.size();
+    const int prefix_size = prefix.size();
     std::vector<int> z(prefix_size, 0);
     for (int i = 1; i < prefix_size; i++) {
         if (prefix[i] > 0) {
@@ -63,7 +63,7 @@ std::vector<int> PrefixToZ(const std::vector<int> &prefix) {
 }
 
 std::string ZToString(const std::vector<int> &z) {
-    int z_size = z.size();
+    const int z_size = z.size();
 
     if (z_size == 0) {
         return std::string();
@@ -167,6 +167,6 @@ void CheckResult() {
 
 int main() {
     CheckResult();
-     
+
     return 0;
 }
