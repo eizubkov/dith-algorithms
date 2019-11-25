@@ -3,7 +3,7 @@
 #include <string>
 #include <cassert>
 
-const int alphabet_size = 26;
+const int kAlphabetSize = 26;
 
 std::vector<int> StringToZ(const std::string &txt) {
     const int txt_size = txt.size();
@@ -95,7 +95,7 @@ std::string ZToString(const std::vector<int> &z) {
             append_above_block = true;
         } else {
             if (append_above_block) {
-                std::vector<bool> used_chars(alphabet_size, false);
+                std::vector<bool> used_chars(kAlphabetSize, false);
                 for (int n : used_indices) {
                     used_chars[txt[n] - 'a'] = true;
                 }
@@ -126,7 +126,7 @@ std::vector<int> ZToPrefix(const std::vector<int> &z) {
 }
 
 char GetNewChar(const std::vector<int> &prefix, const std::string &txt, int pos) {
-    std::vector<bool> used(alphabet_size, false);
+    std::vector<bool> used(kAlphabetSize, false);
     int symbol = prefix[pos - 1];
     while (symbol > 0) {
         used[txt[symbol] - 'a'] = true;
