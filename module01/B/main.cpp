@@ -157,22 +157,39 @@ std::string PrefixToString(const std::vector<int> &prefix) {
 
 void CheckResult() {
     {
-        std::string txt = "aabbabbaba";
+        std::string min_string = "aabbabbaba";
 
-        assert((ZToString(PrefixToZ(StringToPrefix(txt)))) == txt);
-        assert(PrefixToString(ZToPrefix(StringToZ(txt))) == txt);
+        assert((ZToString(PrefixToZ(StringToPrefix(min_string)))) == min_string);
+        assert(PrefixToString(ZToPrefix(StringToZ(min_string))) == min_string);
     }
     {
-        std::string txt = "hello";
-        std::string except = "abbbb";
-        assert((ZToString(PrefixToZ(StringToPrefix(txt)))) == except);
-        assert(PrefixToString(ZToPrefix(StringToZ(txt))) == except);
+        std::string string_ = "hello";
+        std::string min_string = "abbbb";
+        assert((ZToString(PrefixToZ(StringToPrefix(string_)))) == min_string);
+        assert(PrefixToString(ZToPrefix(StringToZ(string_))) == min_string);
     }
+
     {
-        std::string txt = "word";
-        std::string except = "abbb";
-        assert((ZToString(PrefixToZ(StringToPrefix(txt)))) == except);
-        assert(PrefixToString(ZToPrefix(StringToZ(txt))) == except);
+        std::string string_ = "cuchcuc";
+        std::string min_string = "abacaba";
+        assert((ZToString(PrefixToZ(StringToPrefix(string_)))) == min_string);
+        assert(PrefixToString(ZToPrefix(StringToZ(string_))) == min_string);
+    }
+
+
+    {
+        std::string min_string = "abacaba";
+        std::vector<int> prefix = {0, 0, 1, 0, 1, 2, 3};
+        std::vector<int> z = {0, 0, 1, 0, 3, 0, 1};
+        std::vector<int> min_prefix = {0, 0, 1, 0, 1, 2, 1};
+
+        assert(StringToZ(min_string) == z);
+        assert(StringToPrefix(min_string) == prefix);
+        assert(PrefixToZ(prefix) == z);
+        assert(ZToString(z) == min_string);
+        assert(PrefixToString(prefix) == min_string);
+        assert(ZToPrefix(z) == min_prefix);
+        assert(PrefixToZ(prefix) == z);
     }
 
     std::cout << "OK" << std::endl;
