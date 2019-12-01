@@ -7,7 +7,6 @@ const double kEPS = 1e-10;
 
 class Vector3D {
 public:
-
     double x, y, z;
     // 3D Coordinates of the Vector
 
@@ -24,7 +23,6 @@ public:
     Vector3D operator*(double c);
 
     double magnitude() { return sqrt((x * x) + (y * y) + (z * z)); }
-
 };
 
 Vector3D::Vector3D() : x(0.), y(0.), z(0.) {}
@@ -73,7 +71,7 @@ double DistanceBetweenSegmentAndPoint(const Vector3D &point1,
         const auto mid2 = Middle(mid1, left);
         const auto mid3 = Middle(mid1, right);
         if (DistanceBetweenPoints(mid2, point3) -
-                    DistanceBetweenPoints(mid3, point3) < kEPS) {
+            DistanceBetweenPoints(mid3, point3) < kEPS) {
             right = mid3;
         } else {
             left = mid2;
@@ -91,7 +89,7 @@ double DistanceBetweenSegments(const Vector3D &point1, const Vector3D &point2,
         const auto mid2 = Middle(mid1, left);
         const auto mid3 = Middle(mid1, right);
         if (DistanceBetweenSegmentAndPoint(point3, point4, mid2) -
-                    DistanceBetweenSegmentAndPoint(point3, point4, mid3) < kEPS) {
+            DistanceBetweenSegmentAndPoint(point3, point4, mid3) < kEPS) {
             right = mid3;
         } else {
             left = mid2;
