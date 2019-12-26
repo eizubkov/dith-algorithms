@@ -4,15 +4,17 @@
 Время работы - O(n + m + Z), где Z - общее число вхождений подстрок шаблона “между вопросиками” в исходном тексте. m ≤ 5000, n ≤ 2000000.
 
 ##### Пример 1
-  Ввод | Вывод 
-  --- | --- 
-  ab??aba|2|
-  ababacaba|
-  
+```
+Ввод                        | Вывод
+ab??aba                     | 2
+ababacaba                   |
+```
+
 ##### Пример 2
-  Ввод | Вывод 
-  --- | --- 
-  aa??bab?cbaa?|0 13
-  aabbbabbcbaabaabbbabbcbaab|
+```
+Ввод                        | Вывод
+aa??bab?cbaa?               | 0 13
+aabbbabbcbaabaabbbabbcbaab  |
+```
 
 [Submission](https://contest.yandex.ru/contest/13875/run-report/21348620/)
